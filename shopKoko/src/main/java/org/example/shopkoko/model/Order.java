@@ -38,13 +38,6 @@ public class Order {
         this.orderDescription = orderDescription;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 
     public String getStatus() {
         return status;
@@ -58,6 +51,13 @@ public class Order {
     private int orderId;
     private LocalDate orderDate;
     private String orderDescription;
-    private Customer customer;
+    private Customer customerId;
     private String status;
+
+    public Customer getCustomerId() {
+        return customerId;
+    }
+    public void setCustomer(Customer customerId) {
+        this.customerId = customerId;
+    }
 }
