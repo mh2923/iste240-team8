@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List</title>
+
+
+</head>
+
+<body>
+
+<h1>Product List</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Cost</th>
+        <th>Available</th>
+    </tr>
+    </thead>
+
+    <tbody id="productTable">
+
+    {{#productList}}
+    <tr>
+        <td>{{productName}}</td>
+        <td>{{productDescription}}</td>
+        <td>{{productPrice}}</td>
+        <td>{{productQuantity}}</td>
+        <td>{{productAvailable}}</td>
+    </tr>
+    {{/productList}}
+
+    </tbody>
+</table>
+
+</body>
+</html>

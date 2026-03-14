@@ -5,56 +5,56 @@ import org.springframework.stereotype.Component;
 @Component
 public class Product {
     //Name of the attributes
-    private String productname;
-    private String productdescription;
-    private String productprice;
-    private String productquantity;
-    private double productcost;
-    private boolean productavailable;
+    private String productName;
+    private String productDescription;
+    private double productPrice;
+    private int productQuantity;
+    private double productCost;
+    private boolean productAvailable;
     private Category category;
 
     //Constructor
 
     //Getters
     public String getProductname() {
-        return productname;
+        return productName;
     }
-    public String getProductdescription() {
-        return productdescription;
+    public String getProductDescription() {
+        return productDescription;
     }
-    public String getProductprice() {
-        return productprice;
+    public double getProductPrice() {
+        return productPrice;
     }
-    public String getProductquantity() {
-        return productquantity;
+    public int getProductQuantity() {
+        return productQuantity;
     }
-    public double getProductcost() {
-        return productcost;
+    public double getProductCost() {
+        return productCost;
     }
-    public boolean getProductavailability() {
-        return productavailable;
+    public boolean getProductAvailability() {
+        return productAvailable;
     }
     public Category getCategory() {
         return category;
     }
     //Setters
-    public void setProductname(String productname) {
-        this.productname = productname;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
-    public void setProductdescription(String productdescription) {
-        this.productdescription = productdescription;
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
-    public void setProductprice(String productprice) {
-        this.productprice = productprice;
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
     }
-    public void setProductquantity(String productquantity) {
-        this.productquantity = productquantity;
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
     }
-    public void setProductcost(double productcost) {
-        this.productcost = productcost;
+    public void setProductCost(double productCost) {
+        this.productCost = productCost;
     }
-    public void setProductavailable(boolean productavailable) {
-        this.productavailable = productavailable;
+    public void setProductAvailable(boolean productAvailable) {
+        this.productAvailable = productAvailable;
     }
     public void setCategory(Category category) {
         this.category = category;
