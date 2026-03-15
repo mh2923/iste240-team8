@@ -6,14 +6,22 @@ import org.springframework.stereotype.Component;
 public class Category {
     private String CategoryName;
     private String description;
+    private Category ParentCategory;
 
-    //Constructor
+
+    //Constructors
     public Category() {
 
     }
     public Category(String CategoryName, String description) {
         this.CategoryName = CategoryName;
         this.description = description;
+    }
+
+    public Category(String CategoryName, String description, Category ParentCategory) {
+        this.CategoryName = CategoryName;
+        this.description = description;
+        this.ParentCategory = ParentCategory;
     }
 
     //Getters
@@ -25,11 +33,13 @@ public class Category {
         return description;
     }
 
+    public Category getParentCategory() {return ParentCategory;}
+
     //Setters
 
-    public void setCategoryName(String categoryName) {
-        CategoryName = categoryName;
-    }
+    public void setCategoryName(String categoryName) {CategoryName = categoryName;}
+
+    public void setParentCategoryName(String parentCategoryName) {CategoryName = parentCategoryName;}
 
     public void setDescription(String description) {
         this.description = description;

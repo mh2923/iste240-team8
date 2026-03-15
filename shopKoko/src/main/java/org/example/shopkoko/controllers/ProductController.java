@@ -9,7 +9,7 @@ import org.example.shopkoko.services.ProductService;
 
 @Controller
 public class ProductController {
-    private ProductService productService;
+    private final ProductService productService;
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -31,5 +31,4 @@ public class ProductController {
     public String saveProducts(Model model) {
         model.addAttribute("productList", this.productService.findALl());
         return "redirect:addProducts";
-    }
-}
+    }}

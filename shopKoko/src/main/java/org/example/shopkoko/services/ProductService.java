@@ -1,4 +1,4 @@
-package services;
+package org.example.shopkoko.services;
 
 import org.example.shopkoko.model.Product;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ public class ProductService {
     List<Product> products = new ArrayList<Product>();
 
     public ProductService() {
-        //add something here
+
     }
     public List<Product> findALl(){
         return products;
