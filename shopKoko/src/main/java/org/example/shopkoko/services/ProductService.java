@@ -3,34 +3,23 @@ package org.example.shopkoko.services;
 import org.example.shopkoko.model.Product;
 import org.example.shopkoko.model.Category;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductService {
-    private List<Product> products = new ArrayList<>();
+    private List<Product> products = new ArrayList<Product>();
     private CategoryService categoryService;
-    /*
-    public class Product {
-    //Name of the attributes
-    private String productName;
-    private String productDescription;
-    private double productPrice;
-    private int productQuantity;
-    private double productCost;
-    private boolean productAvailable;
-    private Category category;
-    */
-    //Constructor
+
     public ProductService() {
         this.categoryService = new CategoryService();
-    }
+    //Constructor
     Category mobile = categoryService.findCategorybyname("Mobile");
     Category Laptop = categoryService.findCategorybyname("Laptop");
     Category Headphones = categoryService.findCategorybyname("Headphones");
 
+    //Products
     Product pr1 = new Product(
             "IPhone 15 Pro",
             "It is an enterprising phone with 256GB storage and apple's A18 Bionic chip",
@@ -71,4 +60,18 @@ public class ProductService {
             1000.00,
             true,
             Laptop);
+    //Adding to the list
+        products.add(pr1);
+        products.add(pr2);
+        products.add(pr3);
+        products.add(pr4);
+        products.add(pr5);
+}
+
+    public List<Product> getProducts() {
+        return products;
+    }
+    public void addproduct(Product product) {
+        products.add(product);
+    }
 }
