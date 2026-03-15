@@ -74,7 +74,20 @@ public class CategoryService {
         return categoryList;
     }
 
+    //Function for adding categories to the list
     public void AddCategories(Category category) {
         categoryList.add(category);
     }
-    }
+
+    //Function for searching for a particular category from the list.
+    public Category findCategorybyname(String categoryname) {
+        //For each loop to find out each category.
+        for (Category category : categoryList) {
+            if (category.getCategoryName() == categoryname) {
+                // If the category needed is the category needed. The result should be returned
+                return category;
+            }
+        }
+        // If the category needed is not the category needed. The result should be null.
+        return null;
+    }}
