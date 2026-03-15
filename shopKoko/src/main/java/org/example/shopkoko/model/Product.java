@@ -13,7 +13,18 @@ public class Product {
     private boolean productAvailable;
     private Category category;
 
-    //Constructor
+    //Constructors
+    public Product() {}
+    public Product(String productName, String productDescription, double productPrice, int productQuantity,double productCost, boolean productAvailable, Category category)
+    {
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productPrice = productPrice;
+        this.productQuantity = productQuantity;
+        this.productCost = productCost;
+        this.productAvailable = productAvailable;
+        this.category = category;
+    }
 
     //Getters
     public String getProductname() {
