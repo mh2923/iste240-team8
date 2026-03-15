@@ -24,11 +24,11 @@ public class CategoryService {
         //Main categories
         Category Mouse = new Category("Mouse", "Device used to move cursor on computer screen.");
         Category Keyboard = new Category("Keyboard", "Device used to input characters on computer screen.");
-        Category Monitor = new Category("Monitor", "");
-        Category Laptop = new Category("Laptop", "");
-        Category Mobile = new Category("Mobile", "");
-        Category Headphones = new Category("Headphones", "");
-        Category Tablets = new Category("Tablets", "");
+        Category Monitor = new Category("Monitor", "Device used to see computer screen.");
+        Category Laptop = new Category("Laptop", "Handheld device which can be carried around.");
+        Category Mobile = new Category("Mobile", "Handheld device which can be used to communicate, click photographs and much more.");
+        Category Headphones = new Category("Headphones", "Device which can be used to hear audio output from any electronic device");
+        Category Tablets = new Category("Tablets", "Device similar to a mobile but with a bigger screen.");
 
         //Adding all the main categories to the list
         categoryList.add(Mouse);
@@ -40,21 +40,21 @@ public class CategoryService {
         categoryList.add(Tablets);
 
         //Sub categories
-        Category OfficeWirelessmouse = new Category("OfficeWirelessmouse", "", Mouse);
-        Category OfficeWiredmouse = new Category("OfficeWiredmouse", "", Mouse);
-        Category OfficeWirelesskeyboard = new Category("OfficeWirelesskeyboard", "", Keyboard);
-        Category OfficeWiredkeyboard = new Category("OfficeWiredkeyboard", "", Keyboard);
-        Category GamingWirelessmouse = new Category("GamingWirelessmouse", "", Mouse);
-        Category GamingWiredmouse = new Category("GamingWiredmouse", "", Mouse);
-        Category GamingWirelesskeyboard = new Category("GamingWirelesskeyboard", "", Keyboard);
-        Category GamingWiredkeyboard = new Category("GamingWiredkeyboard", "", Keyboard);
-        Category OfficeLaptop = new Category("OfficeLaptop", "", Laptop);
-        Category GamingLaptop = new Category("GamingLaptop", "", Laptop);
-        Category InEarHeadphones = new Category("InEarHeadphones", "", Headphones);
-        Category OverEarHeadphones = new Category("OverEarHeadphones", "", Headphones);
-        Category OnEarHeadphones = new Category("OnEarHeadphones", "", Headphones);
+        Category OfficeWirelessmouse = new Category("OfficeWirelessmouse", "Wireless mouse which can be used in offices. It focuses more on looks and cost rather than performance. ", Mouse);
+        Category OfficeWiredmouse = new Category("OfficeWiredmouse", "Wired mouse which can be used in offices. It focuses more on looks and cost rather than performance", Mouse);
+        Category OfficeWirelesskeyboard = new Category("OfficeWirelesskeyboard", "Wireless keyboard which can be used in offices. It focuses more on looks and cost rather than performance.", Keyboard);
+        Category OfficeWiredkeyboard = new Category("OfficeWiredkeyboard", "Wired keyboard which can be used in offices. It focuses more on looks and cost rather than performance.", Keyboard);
+        Category GamingWirelessmouse = new Category("GamingWirelessmouse", "Wireless mouse which can be used for gaming. It focuses on performance above anything.", Mouse);
+        Category GamingWiredmouse = new Category("GamingWiredmouse", "Wired mouse which can be used for gaming. It focuses on performance above anything.", Mouse);
+        Category GamingWirelesskeyboard = new Category("GamingWirelesskeyboard", "Wireless keyboard which can be used for gaming. It focuses on performance above anything.", Keyboard);
+        Category GamingWiredkeyboard = new Category("GamingWiredkeyboard", "Wired keyboard which can be used for gaming. It focuses on performance above anything.", Keyboard);
+        Category OfficeLaptop = new Category("OfficeLaptop", "A movable computer which focuses on weight and sleekness over performance", Laptop);
+        Category GamingLaptop = new Category("GamingLaptop", "A movable computer which focuses on performance over weight and looks", Laptop);
+        Category InEarHeadphones = new Category("InEarHeadphones", "Headphones which are put inside the ear similar to airpods.", Headphones);
+        Category OverEarHeadphones = new Category("OverEarHeadphones", "Headphones which cover the entire ear promising best sound cancellation and immersive experience.", Headphones);
+        Category OnEarHeadphones = new Category("OnEarHeadphones", "Headphones which are on the ear. They dont provide best sound cancelling but provide a good experience.", Headphones);
 
-        //Adding all the subcategories to the list as well
+        //Adding all the sub-categories to the list as well
         categoryList.add(OfficeWirelessmouse);
         categoryList.add(OfficeWiredmouse);
         categoryList.add(OfficeWirelesskeyboard);
