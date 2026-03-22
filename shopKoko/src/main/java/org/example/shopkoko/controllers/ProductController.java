@@ -1,5 +1,6 @@
 package org.example.shopkoko.controllers;
 
+import org.example.shopkoko.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,17 +19,16 @@ public class ProductController {
 
     @GetMapping("/products")
     public String getProducts(Model model) {
-        model.addAttribute("productList", this.productService.findALl());
+        model.addAttribute("productList", this.productService.getProducts());
         return "products";
     }
     @GetMapping("/products/add")
-    public String addProducts(Model model) {
-        model.addAttribute("productList", this.productService.findALl());
+    public String addProductsPage(Model model) {
         return "addProducts";
     }
 
     @PostMapping("/products/add")
-    public String saveProducts(Model model) {
-        model.addAttribute("productList", this.productService.findALl());
-        return "redirect:addProducts";
+    public String saveProducts(Product product) {
+        productService.addproduct(product);
+        return "redirect:/products";
     }}

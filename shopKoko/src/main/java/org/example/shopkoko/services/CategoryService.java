@@ -135,7 +135,7 @@ public class CategoryService {
     public Category findCategorybyname(String categoryname) {
         //For each loop to find out each category.
         for (Category category : categoryList) {
-            if (category.getCategoryName() == categoryname) {
+            if (category.getCategoryName().equals(categoryname)) {
                 // If the category needed is the category needed. The result should be returned
                 return category;
             }

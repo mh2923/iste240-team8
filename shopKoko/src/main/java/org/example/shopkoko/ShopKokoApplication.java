@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ShopKokoApplication {
 
-    static void main(String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(ShopKokoApplication.class, args);
     }
-
 }

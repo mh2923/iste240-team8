@@ -27,7 +27,7 @@ public class Product {
     }
 
     //Getters
-    public String getProductname() {
+    public String getProductName() {
         return productName;
     }
     public String getProductDescription() {
@@ -42,7 +42,7 @@ public class Product {
     public double getProductCost() {
         return productCost;
     }
-    public boolean getProductAvailability() {
+    public boolean getProductAvailable() {
         return productAvailable;
     }
     public Category getCategory() {
