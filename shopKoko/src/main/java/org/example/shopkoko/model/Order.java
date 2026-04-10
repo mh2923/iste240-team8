@@ -1,11 +1,22 @@
 package org.example.shopkoko.model;
 
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
-@Component
 public class Order {
+    public Order() {}
+
+    public Order(Product product, int orderId, LocalDate orderDate,
+                 String orderDescription, Customer customerId, String status) {
+        this.product = product;
+        this.orderId = orderId;
+        this.orderDate = orderDate;
+        this.orderDescription = orderDescription;
+        this.customerId = customerId;
+        this.status = status;
+    }
+
+
     public Product getProduct() {
         return product;
     }

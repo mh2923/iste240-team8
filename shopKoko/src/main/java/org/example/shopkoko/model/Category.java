@@ -1,8 +1,6 @@
 package org.example.shopkoko.model;
 
-import org.springframework.stereotype.Component;
 
-@Component
 public class Category {
     private String CategoryName;
     private String description;
@@ -39,7 +37,9 @@ public class Category {
 
     public void setCategoryName(String categoryName) {CategoryName = categoryName;}
 
-    public void setParentCategoryName(String parentCategoryName) {CategoryName = parentCategoryName;}
+    public void setParentCategory(Category parentCategory) {
+        ParentCategory = parentCategory;
+    }
 
     public void setDescription(String description) {
         this.description = description;
