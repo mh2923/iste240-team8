@@ -1,8 +1,6 @@
 package org.example.shopkoko.model;
 
-import org.springframework.stereotype.Component;
 
-@Component
 public class Product {
     //Name of the attributes
     private String productName;

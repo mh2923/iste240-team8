@@ -1,8 +1,6 @@
 package org.example.shopkoko.model;
 
-import org.springframework.stereotype.Component;
 
-@Component
 public class Customer {
     private int customerId;
     private String customerName;
@@ -62,5 +60,9 @@ public class Customer {
 
     public void setCustomerPhone(int customerPhone) {
         this.customerPhone = customerPhone;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 }
