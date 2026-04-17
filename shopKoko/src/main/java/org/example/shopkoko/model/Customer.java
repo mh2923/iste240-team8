@@ -1,19 +1,34 @@
 package org.example.shopkoko.model;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table
 public class Customer {
-    private int customerId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id")
+    private Long customerId;
+
+    @Column(name = "customer_name", nullable = false, length = 100)
     private String customerName;
+
+    @Column(name = "customer_email", nullable = false, unique = true, length = 120)
     private String customerEmail;
-    private int customerPhone;
+
+    @Column(name = "customer_phone", length = 20)
+    private String customerPhone;
+
+    @Column(name = "customer_address", length = 255)
     private String customerAddress;
 
     //Constructors
     public Customer() {}
-    public Customer(int customerId,
+
+    public Customer(long customerId,
                     String customerName,
                     String customerEmail,
-                    int customerPhone,
+                    String customerPhone,
                     String customerAddress) {
         this.customerId = customerId;
         this.customerName = customerName;
@@ -24,7 +39,7 @@ public class Customer {
 
 
     //Getters
-    public int getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
 
@@ -36,7 +51,7 @@ public class Customer {
         return customerEmail;
     }
 
-    public int getCustomerPhone() {
+    public String getCustomerPhone() {
         return customerPhone;
     }
 
@@ -46,7 +61,7 @@ public class Customer {
 
 
     //Setters
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(long customerId) {
         this.customerId = customerId;
     }
 
@@ -58,7 +73,7 @@ public class Customer {
         this.customerAddress = customerAddress;
     }
 
-    public void setCustomerPhone(int customerPhone) {
+    public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
     }
 
