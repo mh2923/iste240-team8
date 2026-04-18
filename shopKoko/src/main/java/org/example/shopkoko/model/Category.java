@@ -1,3 +1,5 @@
+// Muhammad Usman Habib - 761005924
+
 package org.example.shopkoko.model;
 
 import jakarta.persistence.*;
