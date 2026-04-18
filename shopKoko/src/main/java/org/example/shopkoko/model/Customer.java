@@ -1,3 +1,4 @@
+// Yergeshbay Yerkebulan 759000935
 package org.example.shopkoko.model;
 
 import jakarta.persistence.*;
