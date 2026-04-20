@@ -1,77 +1,64 @@
+// Muhammad Usman Habib - 761005924
+
 package org.example.shopkoko.services;
 
+import jakarta.transaction.Transactional;
 import org.example.shopkoko.model.Product;
-import org.example.shopkoko.model.Category;
+import org.example.shopkoko.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class ProductService {
-    private List<Product> products = new ArrayList<Product>();
-    private CategoryService categoryService;
 
-    public ProductService() {
-        this.categoryService = new CategoryService();
-    //Constructor
-    Category mobile = categoryService.findCategorybyname("Mobile");
-    Category Laptop = categoryService.findCategorybyname("Laptop");
-    Category Headphones = categoryService.findCategorybyname("Headphones");
+    private final ProductRepository productRepository;
 
-    //Products
-    Product pr1 = new Product(
-            "IPhone 15 Pro",
-            "It is an enterprising phone with 256GB storage and apple's A18 Bionic chip",
-            2000.00,
-            100,
-            1000.00,
-            true,
-            mobile);
-    Product pr2 = new Product(
-            "HP Omen 16",
-            "A laptop from the HP omen lineup providing apple's new intel i9 with RTX 4050",
-            6000.00,
-            100,
-            5400.00,
-            true,
-            Laptop);
-    Product pr3 = new Product(
-            "SkullCandy Plyr",
-            "It is an enterprising phone with 256GB storage and apple's A18 Bionic chip",
-            2000.00,
-            100,
-            1000.00,
-            false,
-            Headphones);
-    Product pr4 = new Product(
-            "Iphone 16 Pro",
-            "It is an enterprising phone with 256GB storage and apple's A18 Bionic chip",
-            2500.00,
-            100,
-            2000.00,
-            false,
-            mobile);
-    Product pr5 = new Product(
-            "Asus TUFF",
-            "It is an enterprising phone with 256GB storage and apple's A18 Bionic chip",
-            2000.00,
-            100,
-            1000.00,
-            true,
-            Laptop);
-    //Adding to the list
-        products.add(pr1);
-        products.add(pr2);
-        products.add(pr3);
-        products.add(pr4);
-        products.add(pr5);
-}
-
-    public List<Product> getProducts() {
-        return products;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
-    public void addproduct(Product product) {
-        products.add(product);
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    public List<Product> getProductsByName(String productName) {
+        return productRepository.findByProductName(productName);
+    }
+
+    public List<Product> getAvailableProducts() {
+        return productRepository.findAvailableProducts();
+    }
+
+    public Product addProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    public Product updateProduct(Long id, Product updatedProduct) {
+        return productRepository.findById(id).map(product -> {
+            product.setProductName(updatedProduct.getProductName());
+            product.setProductDescription(updatedProduct.getProductDescription());
+            product.setProductPrice(updatedProduct.getProductPrice());
+            product.setProductQuantity(updatedProduct.getProductQuantity());
+            product.setProductCost(updatedProduct.getProductCost());
+            product.setProductAvailable(updatedProduct.isProductAvailable());
+            product.setCategory(updatedProduct.getCategory());
+            product.setSeller(updatedProduct.getSeller());
+            return productRepository.save(product);
+        }).orElse(null);
+    }
+
+    public int updateProductPrice(Long id, double price) {
+        return productRepository.updateProductPriceById(id, price);
+    }
+
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
     }
 }
