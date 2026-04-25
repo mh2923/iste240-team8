@@ -1,0 +1,248 @@
+/* Yergeshbay Yerkebulan 759000935 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+#main-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top Bar */
+#topbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    gap: 24px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+#company-name a {
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: 800;
+    color: #e44d26;
+}
+
+#search-bar {
+    flex: 1;
+    display: flex;
+}
+
+#search-bar .ui.search,
+#search-bar .ui.input {
+    width: 100%;
+}
+
+#topbar-options {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+/* Nav Bar */
+#navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 24px;
+}
+
+#navbar .ui.menu {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+}
+
+#navbar .ui.menu .item {
+    color: #555;
+    font-size: 14px;
+}
+
+#navbar .ui.menu .item:hover {
+    color: #e44d26;
+    background: transparent;
+}
+
+#navbar .ui.menu .item.active {
+    color: #e44d26;
+    font-weight: 700;
+    border-bottom: 2px solid #e44d26;
+}
+
+/* Page Body */
+#page-body {
+    display: flex;
+    flex: 1;
+    gap: 24px;
+    padding: 24px;
+    align-items: flex-start;
+}
+
+/* Sidebar */
+#sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    position: sticky;
+    top: 76px;
+}
+
+#sidebar h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.filter-group:last-of-type {
+    border-bottom: none;
+}
+
+.filter-group h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+
+.filter-group .field {
+    margin-bottom: 6px !important;
+}
+
+/* Main Content */
+#main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+#sellers-section {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+#sellers-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 12px;
+}
+
+#sellers-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+}
+
+#sellersTable {
+    width: 100%;
+}
+
+#sellersTable th {
+    white-space: nowrap;
+}
+
+#sellersTable td {
+    vertical-align: middle;
+}
+
+/* Modal polish */
+#seller-modal .header {
+    font-weight: 700;
+}
+
+#seller-form .field label {
+    font-weight: 600;
+}
+
+/* Footer */
+#footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 48px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+    margin-top: auto;
+    gap: 32px;
+}
+
+#footer-brand,
+#footer-links,
+#footer-info {
+    flex: 1;
+    min-width: 180px;
+}
+
+#footer-brand h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #e44d26;
+    margin-bottom: 6px;
+}
+
+#footer-brand p {
+    font-size: 14px;
+    color: #666;
+}
+
+#footer-links h4,
+#footer-info h4 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#footer-links a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #555;
+}
+
+#footer-links a:hover {
+    color: #e44d26;
+}
+
+#footer-bottom {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 16px;
+}
