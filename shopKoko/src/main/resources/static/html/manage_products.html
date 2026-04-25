@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products - ShopKoKo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <link rel="stylesheet" href="/css/manage_products.css">
+</head>
+<body>
+<div id="main-container">
+
+    <!-- Top Bar -->
+    <div id="topbar">
+        <div id="company-name">
+            <a href="/">ShopKoko</a>
+        </div>
+        <div id="search-bar">
+            <div class="ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search products...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+        <div id="topbar-options">
+            <a href="#">
+                <button class="ui active button">
+                    <i class="user icon"></i>
+                    Sign In
+                </button>
+            </a>
+            <a href="/cart">
+                <div class="ui vertical animated button" tabindex="0">
+                    <div class="hidden content">Cart</div>
+                    <div class="visible content">
+                        <i class="shop icon"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <nav id="navbar">
+        <div class="ui menu">
+            <a class="item" href="/">Home</a>
+            <a class="item" href="/products">All Products</a>
+            <a class="item active" href="/manage-products">Manage Products</a>
+            <a class="item" href="/manage-categories">Manage Categories</a>
+            <a class="item" href="/manage-sellers">Manage Sellers</a>
+            <a class="item" href="/orders">Orders</a>
+            <a class="item" href="/profile">Profile</a>
+        </div>
+    </nav>
+
+    <!-- Page Body -->
+    <div id="page-body">
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <h3>Filters</h3>
+
+            <div class="filter-group">
+                <h4>Category</h4>
+                <div class="ui form">
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Laptops"><label>Laptops</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Smartphones"><label>Smartphones</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Electronics"><label>Electronics</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Accessories"><label>Accessories</label></div></div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Price Range</h4>
+                <div class="ui form">
+                    <div class="field">
+                        <label>Min ($)</label>
+                        <input type="number" id="min-price" placeholder="0" min="0">
+                    </div>
+                    <div class="field">
+                        <label>Max ($)</label>
+                        <input type="number" id="max-price" placeholder="9999" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Availability</h4>
+                <div class="ui form">
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" id="available-filter"><label>Available</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" id="outofstock-filter"><label>Out of Stock</label></div></div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Seller</h4>
+                <div class="ui form">
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="seller-filter" value="Apple"><label>Apple</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="seller-filter" value="Samsung"><label>Samsung</label></div></div>
+                </div>
+            </div>
+
+            <button class="ui primary fluid button" id="apply-filters-btn">Apply Filters</button>
+            <button class="ui basic fluid button" id="reset-filters-btn" style="margin-top: 8px;">Reset</button>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content">
+
+            <!-- Products Table -->
+            <div id="products-section">
+                <div id="products-header">
+                    <h2>All Products</h2>
+                    <button class="ui primary button" id="add-product-btn">
+                        <i class="plus icon"></i> Add Product
+                    </button>
+                </div>
+                <table class="ui celled table" id="productsTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Seller</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="productsBody">
+                    <tr>
+                        <td colspan="8">Loading products...</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div> <!-- end #page-body -->
+
+    <!-- Footer -->
+    <div id="footer">
+        <div id="footer-brand">
+            <h3>ShopKoko</h3>
+            <p>Your one-stop electronics store.</p>
+        </div>
+
+        <div id="footer-links">
+            <h4>Quick Links</h4>
+            <a href="/">Home</a>
+            <a href="/products">All Products</a>
+            <a href="/orders">Orders</a>
+            <a href="/cart">Cart</a>
+        </div>
+
+        <div id="footer-info">
+            <h4>Contact Us</h4>
+            <div class="ui list">
+                <div class="item">
+                    <i class="marker icon"></i>
+                    <div class="content">123 Rochester Institute of Technology, Silicon Oasis, Dubai</div>
+                </div>
+                <div class="item">
+                    <i class="mail icon"></i>
+                    <div class="content">
+                        <a href="#">support@shopkoko.com</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <i class="phone icon"></i>
+                    <div class="content">+971 50 123 4567</div>
+                </div>
+                <div class="item">
+                    <i class="linkify icon"></i>
+                    <div class="content">
+                        <a href="/">www.shopkoko.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-bottom">
+            <p>© 2026 ShopKoko. All rights reserved.</p>
+        </div>
+    </div>
+    <!-- Add / Edit Product Form -->
+    <div class="ui modal" id="product-modal">
+        <i class="close icon"></i>
+
+        <div class="header" id="product-modal-title">Add Product</div>
+
+        <div class="content">
+            <form class="ui form" id="product-form">
+                <input type="hidden" id="product-id">
+
+                <div class="field">
+                    <label>Product Name</label>
+                    <input type="text" id="product-name" required>
+                </div>
+
+                <div class="field">
+                    <label>Description</label>
+                    <textarea id="product-description" rows="3"></textarea>
+                </div>
+
+                <div class="three fields">
+                    <div class="field">
+                        <label>Price</label>
+                        <input type="number" id="product-price" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Quantity</label>
+                        <input type="number" id="product-quantity" min="0" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Cost</label>
+                        <input type="number" id="product-cost" step="0.01" min="0" required>
+                    </div>
+                </div>
+
+                <div class="three fields">
+                    <div class="field">
+                        <label>Available</label>
+                        <select id="product-available" required>
+                            <option value="true">Available</option>
+                            <option value="false">Out of Stock</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Category</label>
+                        <select id="product-category" required>
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Seller</label>
+                        <select id="product-seller" required>
+                            <option value="">Select Seller</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="ui primary button">
+                    <i class="save icon"></i> Save Product
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
