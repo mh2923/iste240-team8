@@ -26,6 +26,11 @@ public class PageController {
         return "forward:/html/manage_categories.html";
     }
 
+    @GetMapping("/manage-sellers")
+    public String manageSellers() {
+        return "forward:/html/manage_sellers.html";
+    }
+
     @GetMapping("/product")
     public String product() {
         return "forward:/html/product.html";
@@ -41,9 +46,6 @@ public class PageController {
         return "forward:/html/cart.html";
     }
 
-    @GetMapping("/orders")
-    public String orders() {
-        return "forward:/html/cart.html";
-    }
+
 
 }
