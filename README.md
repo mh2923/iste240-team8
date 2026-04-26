@@ -167,3 +167,8 @@ shopKoko/
 ## Merges
 
 All the merges were done by @AssaULT9090 which is a bug on the github desktop. It is not able to rename my new account. The readme file is also created by me after conducting discussion with my teammates. @mh2923 and @yy1343 have contributed to the project and this file contains all the information after verifying the commits from their git branches. The webpages were designed together on calls with each other.
+
+## Link for the Demo Video
+
+The video was not able to be attached in the project file since the length exceeded the maximum. The link for the same is attached below
+https://drive.google.com/file/d/1BPzNxPj5KwVUyzaDUWW3y_KydZRIoNns/view?usp=sharing
