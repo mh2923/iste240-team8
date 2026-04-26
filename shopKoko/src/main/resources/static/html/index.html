@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopKoKo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+<!-- Main-Container -->
+<div id="main-container">
+    <!-- Top Bar -->
+    <div id="topbar">
+        <!-- Company Name -->
+        <div id="company-name">
+            <a href="/">ShopKoko</a>
+        </div>
+        <!-- Search Bar -->
+        <div id="search-bar">
+            <div class="ui search">
+                <!--Semantic UI search Bar-->
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search products...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+        <!-- Top Bar Options -->
+        <div id="topbar-options">
+            <a href="#">
+                <button class="ui active button">
+                    <i class="user icon"></i>
+                    Sign In
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <nav id="navbar">
+        <div class="ui menu">
+            <a class="item active" href="/">Home</a>
+            <a class="item" href="/products">All Products</a>
+            <a class="item" href="/manage-products">Manage Products</a>
+            <a class="item" href="/manage-categories">Manage Categories</a>
+            <a class="item" href="/manage-sellers">Manage Sellers</a>
+            <a class="item" href="/profile">Profile</a>
+        </div>
+    </nav>
+
+    <!-- Content Section -->
+    <div id="content-section">
+
+        <!-- Featured / All Products Section -->
+        <div class="product-section">
+            <h2>Featured Products</h2>
+            <div class="products-grid" id="featured-products-grid">
+            </div>
+        </div>
+
+        <!-- Laptops Section -->
+        <div class="product-section">
+            <h2>Laptops</h2>
+            <div class="products-grid" id="laptops-grid">
+            </div>
+        </div>
+
+        <!-- Smartphones Section -->
+        <div class="product-section">
+            <h2>Smartphones</h2>
+            <div class="products-grid" id="smartphones-grid">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer -->
+<div id="footer">
+    <div id="footer-brand">
+        <h3>ShopKoko</h3>
+        <p>Your one-stop electronics store.</p>
+    </div>
+
+    <div id="footer-links">
+        <h4>Quick Links</h4>
+        <a href="/">Home</a>
+        <a href="/products">All Products</a>
+        <a href="/cart">Cart</a>
+    </div>
+
+    <div id="footer-info">
+        <h4>Contact Us</h4>
+        <div class="ui list">
+            <div class="item">
+                <i class="marker icon"></i>
+                <div class="content">123 Rochester Institute of Technology, Silicon Oasis, Dubai</div>
+            </div>
+            <div class="item">
+                <i class="mail icon"></i>
+                <div class="content">
+                    <a href="#">support@shopkoko.com</a>
+                </div>
+            </div>
+            <div class="item">
+                <i class="phone icon"></i>
+                <div class="content">+971 50 123 4567</div>
+            </div>
+            <div class="item">
+                <i class="linkify icon"></i>
+                <div class="content">
+                    <a href="/">www.shopkoko.com</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-bottom">
+        <p>© 2026 ShopKoko. All rights reserved.</p>
+    </div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+<script>
+    $(document).ready(function () {
+        loadHomepageProducts();
+
+        $("#search-bar .prompt").on("keydown", function (event) {
+            if (event.key === "Enter") {
+                const searchValue = $(this).val().trim();
+                if (searchValue !== "") {
+                    window.location.href = "/products?search=" + encodeURIComponent(searchValue);
+                } else {
+                    window.location.href = "/products";
+                }
+            }
+        });
+    });
+
+    function loadHomepageProducts() {
+        $.ajax({
+            url: "/api/products/available",
+            method: "GET",
+            success: function (products) {
+                showHomepageSections(products);
+            },
+            error: function () {
+                $("#featured-products-grid").html(`
+                    <div style="color:rgba(255,255,255,0.5); width:100%; text-align:center; padding:1rem;">
+                        Could not load featured products.
+                    </div>
+                `);
+
+                $("#laptops-grid").html(`
+                    <div style="color:rgba(255,255,255,0.5); width:100%; text-align:center; padding:1rem;">
+                        Could not load laptops.
+                    </div>
+                `);
+
+                $("#smartphones-grid").html(`
+                    <div style="color:rgba(255,255,255,0.5); width:100%; text-align:center; padding:1rem;">
+                        Could not load smartphones.
+                    </div>
+                `);
+            }
+        });
+    }
+
+    function showHomepageSections(products) {
+        const featuredProducts = products
+            .slice()
+            .sort(function (a, b) {
+                return b.productId - a.productId;
+            })
+            .slice(0, 4);
+
+        const laptops = products.filter(function (product) {
+            const categoryName = product.category ? product.category.categoryName.toLowerCase() : "";
+            return categoryName.includes("laptop");
+        }).slice(0, 8);
+
+        const smartphones = products.filter(function (product) {
+            const categoryName = product.category ? product.category.categoryName.toLowerCase() : "";
+            return categoryName.includes("phone") || categoryName.includes("smartphone");
+        }).slice(0, 8);
+
+        addProductsIntoGrid("#featured-products-grid", featuredProducts, "No featured products available.");
+        addProductsIntoGrid("#laptops-grid", laptops, "No laptops available.");
+        addProductsIntoGrid("#smartphones-grid", smartphones, "No smartphones available.");
+    }
+
+    function addProductsIntoGrid(gridSelector, products, emptyMessage) {
+        const grid = $(gridSelector);
+        grid.empty();
+
+        if (products.length === 0) {
+            grid.html(`
+            <div style="color:rgba(255,255,255,0.5); width:100%; text-align:center; padding:1rem;">
+                ${emptyMessage}
+            </div>
+        `);
+            return;
+        }
+
+        products.forEach(function (product) {
+            const categoryName = product.category ? product.category.categoryName : "General";
+            const sellerName = product.seller ? product.seller.storeName : "ShopKoko";
+            const prod = getProduct(categoryName);
+
+            grid.append(`
+            <div class="product-card">
+                <div class="product-image">${prod}</div>
+
+                <div class="product-brand">${sellerName} · ${categoryName}</div>
+
+                <div class="product-name">${product.productName}</div>
+
+                <div class="product-description">
+                    ${shortText(product.productDescription || "", 80)}
+                </div>
+
+                <div class="product-price">
+                    $${Number(product.productPrice).toFixed(2)}
+                </div>
+
+                <div class="product-actions">
+                    <a class="ui basic fluid button" href="/product?id=${product.productId}">
+                        View Product
+                    </a>
+
+                    <button class="ui primary fluid button"
+                            style="margin-top:8px;"
+                            onclick="addFeaturedToCart(${product.productId}, \`${product.productName}\`, ${Number(product.productPrice)})">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        `);
+        });
+    }
+
+    function addFeaturedToCart(productId, productName, productPrice) {
+        let cart = JSON.parse(localStorage.getItem("shopKokoCart")) || [];
+
+        const existingItem = cart.find(function (item) {
+            return item.productId === productId;
+        });
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                productId: productId,
+                productName: productName,
+                productPrice: productPrice,
+                quantity: 1
+            });
+        }
+
+        localStorage.setItem("shopKokoCart", JSON.stringify(cart));
+        window.location.href = "/cart";
+    }
+
+    function getProduct(categoryName) {
+        const value = categoryName.toLowerCase();
+
+        if (value.includes("phone")) return "📱";
+        if (value.includes("laptop")) return "💻";
+        if (value.includes("audio") || value.includes("headphone")) return "🎧";
+        if (value.includes("gaming")) return "🎮";
+        if (value.includes("camera")) return "📷";
+        if (value.includes("tv") || value.includes("display")) return "📺";
+        if (value.includes("wearable") || value.includes("watch")) return "⌚";
+        if (value.includes("accessor")) return "🔌";
+
+        return "🛒";
+    }
+
+
+    function shortText(text, maxLength) {
+        if (!text) {
+            return "";
+        }
+
+        if (text.length <= maxLength) {
+            return text;
+        }
+
+        return text.substring(0, maxLength) + "...";
+    }
+</script>
+</body>
+</html>

@@ -1,5 +1,3 @@
-<!--Yergeshbay Yerkebulan 759000935-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,8 +104,219 @@
                 </table>
             </div>
         </div>
+
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+<script>
+    let currentCustomerId = null;
+    let currentCustomer = null;
 
+    $(document).ready(function () {
+        createEditProfileModal();
+        loadCustomerProfile();
+
+        $("#show-profile-btn").on("click", function () {
+            $(".sidebar-item").removeClass("active");
+            $(this).addClass("active");
+
+            $("#orders-card").hide();
+            $("#profile-card").show();
+        });
+
+        $("#show-orders-btn").on("click", function () {
+            $(".sidebar-item").removeClass("active");
+            $(this).addClass("active");
+
+            $("#profile-card").hide();
+            $("#orders-card").show();
+
+            loadCustomerOrders();
+        });
+
+        $("#edit-profile-btn").on("click", function () {
+            openEditProfileModal();
+        });
+
+        $(document).on("submit", "#edit-profile-form", function (event) {
+            event.preventDefault();
+            updateCustomerProfile();
+        });
+    });
+
+    function loadCustomerProfile() {
+        const params = new URLSearchParams(window.location.search);
+        const customerId = params.get("id") || 1;
+
+        currentCustomerId = customerId;
+
+        $.ajax({
+            url: "/api/customers/" + customerId,
+            method: "GET",
+            success: function (customer) {
+                currentCustomer = customer;
+                showCustomerProfile(customer);
+            },
+            error: function () {
+                $("#profile-name").text("Customer Not Found");
+                $("#profile-email").text("Could not load email");
+                $("#profile-phone").text("Could not load phone");
+                $("#profile-address").text("Could not load address");
+            }
+        });
+    }
+
+    function showCustomerProfile(customer) {
+        $("#profile-name").text(customer.customerName || "No Name");
+        $("#profile-email").text(customer.customerEmail || "No Email");
+        $("#profile-phone").text(customer.customerPhone || "No Phone");
+        $("#profile-address").text(customer.customerAddress || "No Address");
+    }
+
+    function loadCustomerOrders() {
+        if (!currentCustomerId) {
+            $("#orders-body").html(`
+                <tr>
+                    <td colspan="5">Customer not loaded.</td>
+                </tr>
+            `);
+            return;
+        }
+
+        $("#orders-body").html(`
+            <tr>
+                <td colspan="5">Loading orders...</td>
+            </tr>
+        `);
+
+        $.ajax({
+            url: "/api/orders/customer/" + currentCustomerId,
+            method: "GET",
+            success: function (orders) {
+                showOrders(orders);
+            },
+            error: function () {
+                $("#orders-body").html(`
+                    <tr>
+                        <td colspan="5">Could not load orders.</td>
+                    </tr>
+                `);
+            }
+        });
+    }
+
+    function showOrders(orders) {
+        const body = $("#orders-body");
+        body.empty();
+
+        if (orders.length === 0) {
+            body.html(`
+                <tr>
+                    <td colspan="5">No orders found.</td>
+                </tr>
+            `);
+            return;
+        }
+
+        orders.forEach(function (order) {
+            const productName = order.product ? order.product.productName : "N/A";
+
+            body.append(`
+                <tr>
+                    <td>${order.orderId}</td>
+                    <td>${order.orderDate}</td>
+                    <td>${productName}</td>
+                    <td>${order.status}</td>
+                    <td>${order.orderDescription || ""}</td>
+                </tr>
+            `);
+        });
+    }
+
+    function createEditProfileModal() {
+        if ($("#edit-profile-modal").length > 0) {
+            return;
+        }
+
+        $("body").append(`
+            <div class="ui modal" id="edit-profile-modal">
+                <i class="close icon"></i>
+                <div class="header">Edit Profile</div>
+
+                <div class="content">
+                    <form class="ui form" id="edit-profile-form">
+                        <div class="field">
+                            <label>Name</label>
+                            <input type="text" id="edit-customer-name" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Email</label>
+                            <input type="email" id="edit-customer-email" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Phone</label>
+                            <input type="text" id="edit-customer-phone" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Address</label>
+                            <textarea id="edit-customer-address" rows="3" required></textarea>
+                        </div>
+
+                        <button type="submit" class="ui primary button">
+                            <i class="save icon"></i> Save Changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+        `);
+    }
+
+    function openEditProfileModal() {
+        if (!currentCustomer) {
+            alert("Customer profile is not loaded yet.");
+            return;
+        }
+
+        $("#edit-customer-name").val(currentCustomer.customerName || "");
+        $("#edit-customer-email").val(currentCustomer.customerEmail || "");
+        $("#edit-customer-phone").val(currentCustomer.customerPhone || "");
+        $("#edit-customer-address").val(currentCustomer.customerAddress || "");
+
+        $("#edit-profile-modal")
+            .modal({
+                closable: true
+            })
+            .modal("show");
+    }
+
+    function updateCustomerProfile() {
+        const updatedCustomer = {
+            customerName: $("#edit-customer-name").val().trim(),
+            customerEmail: $("#edit-customer-email").val().trim(),
+            customerPhone: $("#edit-customer-phone").val().trim(),
+            customerAddress: $("#edit-customer-address").val().trim()
+        };
+
+        $.ajax({
+            url: "/api/customers/" + currentCustomerId,
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(updatedCustomer),
+            success: function (customer) {
+                currentCustomer = customer;
+                showCustomerProfile(customer);
+                $("#edit-profile-modal").modal("hide");
+                alert("Profile updated successfully.");
+            },
+            error: function () {
+                alert("Failed to update profile.");
+            }
+        });
+    }
+</script>
 </body>
 </html>

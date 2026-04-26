@@ -3,6 +3,8 @@ package org.example.shopkoko.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+
+/*Made by Tanmay*/
 @Entity
 @Table(name = "orders")
 public class Order {
