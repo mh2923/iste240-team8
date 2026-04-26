@@ -41,10 +41,6 @@ public class PageController {
         return "forward:/html/profile.html";
     }
 
-    @GetMapping("/cart")
-    public String cart() {
-        return "forward:/html/cart.html";
-    }
 
 
 
