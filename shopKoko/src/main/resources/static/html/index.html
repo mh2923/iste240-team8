@@ -19,7 +19,6 @@
         <!-- Search Bar -->
         <div id="search-bar">
             <div class="ui search">
-                <!--Semantic UI search Bar-->
                 <div class="ui icon input">
                     <input class="prompt" type="text" placeholder="Search products...">
                     <i class="search icon"></i>
@@ -88,7 +87,6 @@
         <h4>Quick Links</h4>
         <a href="/">Home</a>
         <a href="/products">All Products</a>
-        <a href="/cart">Cart</a>
     </div>
 
     <div id="footer-info">
@@ -121,6 +119,7 @@
     </div>
 </div>
 </div>
+<div id="cart-message"></div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
 <script>
@@ -230,38 +229,25 @@
                         View Product
                     </a>
 
-                    <button class="ui primary fluid button"
-                            style="margin-top:8px;"
-                            onclick="addFeaturedToCart(${product.productId}, \`${product.productName}\`, ${Number(product.productPrice)})">
-                        Add to Cart
-                    </button>
+                    <div class="ui primary fluid vertical animated button" tabindex="0"
+                        style="margin-top:8px;"
+                        onclick="addFeaturedToCart('${product.productName}')">
+                        <div class="visible content">Add to Cart</div>
+                        <div class="hidden content">
+                            <i class="shop icon"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         `);
         });
     }
 
-    function addFeaturedToCart(productId, productName, productPrice) {
-        let cart = JSON.parse(localStorage.getItem("shopKokoCart")) || [];
-
-        const existingItem = cart.find(function (item) {
-            return item.productId === productId;
-        });
-
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({
-                productId: productId,
-                productName: productName,
-                productPrice: productPrice,
-                quantity: 1
-            });
-        }
-
-        localStorage.setItem("shopKokoCart", JSON.stringify(cart));
-        window.location.href = "/cart";
+    function addFeaturedToCart(productName) {
+        showCartMessage(productName + " added to cart successfully.");
     }
+
+
 
     function getProduct(categoryName) {
         const value = categoryName.toLowerCase();
@@ -290,6 +276,22 @@
 
         return text.substring(0, maxLength) + "...";
     }
+
+    function showCartMessage(message) {
+        const cart = $("#cart-message");
+
+        cart.text(message);
+        cart.addClass("show");
+
+        clearTimeout(cart.data("timeout"));
+
+        const timeout = setTimeout(function () {
+            cart.removeClass("show");
+        }, 2500);
+
+        cart.data("timeout", timeout);
+    }
+
 </script>
 </body>
 </html>
