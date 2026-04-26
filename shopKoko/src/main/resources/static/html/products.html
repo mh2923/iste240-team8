@@ -1,0 +1,390 @@
+<!-- Muhammad Usman Habib - 761005924 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products - ShopKoko</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <link rel="stylesheet" href="/css/products.css">
+</head>
+<body>
+<div id="main-container">
+
+    <!-- Top Bar -->
+    <div id="topbar">
+        <div id="company-name">
+            <a href="/">ShopKoko</a>
+        </div>
+        <div id="search-bar">
+            <div class="ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search products...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+        <div id="topbar-options">
+            <a href="#">
+                <button class="ui active button">
+                    <i class="user icon"></i>
+                    Sign In
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <nav id="navbar">
+        <div class="ui menu">
+            <a class="item" href="/">Home</a>
+            <a class="item active" href="/products">All Products</a>
+            <a class="item" href="/manage-products">Manage Products</a>
+            <a class="item" href="/manage-categories">Manage Categories</a>
+            <a class="item" href="/manage-sellers">Manage Sellers</a>
+            <a class="item" href="/profile">Profile</a>
+        </div>
+    </nav>
+
+    <!-- Page Body -->
+    <div id="page-body">
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <h3>Filters</h3>
+
+            <div class="filter-group">
+                <h4>Category</h4>
+                <div class="ui form">
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Laptops"><label>Laptops</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Smartphones"><label>Smartphones</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Electronics"><label>Electronics</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Accessories"><label>Accessories</label></div></div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Price Range</h4>
+                <div class="ui form">
+                    <div class="field">
+                        <label>Min ($)</label>
+                        <input type="number" id="min-price" placeholder="0" min="0">
+                    </div>
+                    <div class="field">
+                        <label>Max ($)</label>
+                        <input type="number" id="max-price" placeholder="9999" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Availability</h4>
+                <div class="ui form">
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" id="available-filter"><label>Available</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" id="outofstock-filter"><label>Out of Stock</label></div></div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Seller</h4>
+                <div class="ui form">
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="seller-filter" value="Apple"><label>Apple</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="seller-filter" value="Samsung"><label>Samsung</label></div></div>
+                </div>
+            </div>
+
+            <button class="ui primary fluid button" id="apply-filters-btn">Apply Filters</button>
+            <button class="ui basic fluid button" id="reset-filters-btn" style="margin-top: 8px;">Reset</button>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content">
+            <div id="products-header">
+                <h2>All Products</h2>
+                <span id="products-count">3 products</span>
+            </div>
+
+            <div class="products-grid" id="products-grid">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+        <div id="footer-brand">
+            <h3>ShopKoko</h3>
+            <p>Your one-stop electronics store.</p>
+        </div>
+
+        <div id="footer-links">
+            <h4>Quick Links</h4>
+            <a href="/">Home</a>
+            <a href="/products">All Products</a>
+        </div>
+
+        <div id="footer-info">
+            <h4>Contact Us</h4>
+            <div class="ui list">
+                <div class="item">
+                    <i class="marker icon"></i>
+                    <div class="content">123 Rochester Institute of Technology, Silicon Oasis, Dubai</div>
+                </div>
+                <div class="item">
+                    <i class="mail icon"></i>
+                    <div class="content"><a href="#">support@shopkoko.com</a></div>
+                </div>
+                <div class="item">
+                    <i class="phone icon"></i>
+                    <div class="content">+971 50 123 4567</div>
+                </div>
+                <div class="item">
+                    <i class="linkify icon"></i>
+                    <div class="content"><a href="/">www.shopkoko.com</a></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-bottom">
+            <p>© 2026 ShopKoko. All rights reserved.</p>
+        </div>
+    </div>
+</div>
+<div id="cart-message"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+<script>
+    let allProducts = [];
+
+    $(document).ready(function () {
+        loadProducts();
+
+        const params = new URLSearchParams(window.location.search);
+        const searchFromUrl = params.get("search");
+
+        if (searchFromUrl) {
+            $("#search-bar .prompt").val(searchFromUrl);
+            applyAllFilters();
+        }
+
+        $("#search-bar .prompt").on("input", function () {
+            applyAllFilters();
+        });
+
+        $("#apply-filters-btn").on("click", function () {
+            applyAllFilters();
+        });
+
+        $("#reset-filters-btn").on("click", function () {
+            resetFilters();
+        });
+    });
+
+    function loadProducts() {
+        $.ajax({
+            url: "/api/products",
+            method: "GET",
+            success: function (products) {
+                allProducts = products;
+                applyAllFilters();
+            },
+            error: function () {
+                $("#products-grid").html(`
+                    <div style="padding: 20px; color: #888;">
+                        Could not load products.
+                    </div>
+                `);
+                $("#products-count").text("0 products");
+            }
+        });
+    }
+
+    function showProducts(products) {
+        const grid = $("#products-grid");
+        grid.empty();
+
+        $("#products-count").text(products.length + " products");
+
+        if (products.length === 0) {
+            grid.html(`
+                <div style="padding: 20px; color: #888;">
+                    No products found.
+                </div>
+            `);
+            return;
+        }
+
+        products.forEach(function (product) {
+            const categoryName = product.category ? product.category.categoryName : "General";
+            const sellerName = product.seller ? product.seller.storeName : "ShopKoko";
+            const statusLabel = product.productAvailable ? "Available" : "Out of Stock";
+            const statusColor = product.productAvailable ? "#2ecc71" : "#e74c3c";
+            const productImage = getProduct(categoryName);
+
+            grid.append(`
+                <div class="product-card">
+                    <div class="product-image">${productImage}</div>
+
+                    <div class="product-brand">${sellerName} · ${categoryName}</div>
+                    <div class="product-name">${product.productName}</div>
+
+                    <div class="product-description">
+                        ${shortText(product.productDescription || "", 90)}
+                    </div>
+
+                    <div class="product-price">$${Number(product.productPrice).toFixed(2)}</div>
+
+                    <div class="product-status" style="color:${statusColor}; font-size:13px; font-weight:600;">
+                        ${statusLabel}
+                    </div>
+
+                    <div class="product-actions">
+                        <a class="ui basic fluid button" href="/product?id=${product.productId}">
+                            View Product
+                        </a>
+                        <div class="ui primary fluid vertical animated button" tabindex="0"
+                                style="margin-top: 8px;"
+                                onclick="addToCart(\`${product.productName}\`)">
+                            <div class="visible content">Add to Cart</div>
+                            <div class="hidden content">
+                                <i class="shop icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        });
+    }
+
+    function applyAllFilters() {
+        let filteredProducts = allProducts;
+
+        const searchValue = $("#search-bar .prompt").val().trim().toLowerCase();
+
+        const selectedCategories = $(".category-filter:checked").map(function () {
+            return $(this).val().toLowerCase();
+        }).get();
+
+        const selectedSellers = $(".seller-filter:checked").map(function () {
+            return $(this).val().toLowerCase();
+        }).get();
+
+        const minPrice = $("#min-price").val();
+        const maxPrice = $("#max-price").val();
+
+        const availableChecked = $("#available-filter").is(":checked");
+        const outOfStockChecked = $("#outofstock-filter").is(":checked");
+
+        if (searchValue !== "") {
+            filteredProducts = filteredProducts.filter(function (product) {
+                const name = product.productName ? product.productName.toLowerCase() : "";
+                const description = product.productDescription ? product.productDescription.toLowerCase() : "";
+                return name.includes(searchValue) || description.includes(searchValue);
+            });
+        }
+
+        if (selectedCategories.length > 0) {
+            filteredProducts = filteredProducts.filter(function (product) {
+                const categoryName = product.category ? product.category.categoryName.toLowerCase() : "";
+                return selectedCategories.includes(categoryName);
+            });
+        }
+
+        if (selectedSellers.length > 0) {
+            filteredProducts = filteredProducts.filter(function (product) {
+                const sellerName = product.seller ? product.seller.storeName.toLowerCase() : "";
+                return selectedSellers.includes(sellerName);
+            });
+        }
+
+        if (minPrice !== "") {
+            filteredProducts = filteredProducts.filter(function (product) {
+                return Number(product.productPrice) >= Number(minPrice);
+            });
+        }
+
+        if (maxPrice !== "") {
+            filteredProducts = filteredProducts.filter(function (product) {
+                return Number(product.productPrice) <= Number(maxPrice);
+            });
+        }
+
+        if (availableChecked && !outOfStockChecked) {
+            filteredProducts = filteredProducts.filter(function (product) {
+                return product.productAvailable === true;
+            });
+        }
+
+        if (!availableChecked && outOfStockChecked) {
+            filteredProducts = filteredProducts.filter(function (product) {
+                return product.productAvailable === false;
+            });
+        }
+
+        showProducts(filteredProducts);
+    }
+
+    function resetFilters() {
+        $("#search-bar .prompt").val("");
+        $(".category-filter").prop("checked", false);
+        $(".seller-filter").prop("checked", false);
+        $("#available-filter").prop("checked", false);
+        $("#outofstock-filter").prop("checked", false);
+        $("#min-price").val("");
+        $("#max-price").val("");
+
+        showProducts(allProducts);
+    }
+
+    function addToCart(productName) {
+        showCartMessage(productName + " added to cart successfully.");
+    }
+
+
+    function getProduct(categoryName) {
+        const value = categoryName.toLowerCase();
+
+        if (value.includes("phone")) return "📱";
+        if (value.includes("laptop")) return "💻";
+        if (value.includes("audio") || value.includes("headphone")) return "🎧";
+        if (value.includes("gaming")) return "🎮";
+        if (value.includes("camera")) return "📷";
+        if (value.includes("tv") || value.includes("display")) return "📺";
+        if (value.includes("wearable") || value.includes("watch")) return "⌚";
+        if (value.includes("accessor")) return "🔌";
+
+        return "🛒";
+    }
+
+    function shortText(text, maxLength) {
+        if (!text) {
+            return "";
+        }
+
+        if (text.length <= maxLength) {
+            return text;
+        }
+
+        return text.substring(0, maxLength) + "...";
+    }
+
+    function showCartMessage(message) {
+        const cart = $("#cart-message");
+
+        cart.text(message);
+        cart.addClass("show");
+
+        clearTimeout(cart.data("timeout"));
+
+        const timeout = setTimeout(function () {
+            cart.removeClass("show");
+        }, 2500);
+
+        cart.data("timeout", timeout);
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!-- Muhammad Usman Habib - 761005924 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products - ShopKoKo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <link rel="stylesheet" href="/css/manage_products.css">
+</head>
+<body>
+<div id="main-container">
+
+    <!-- Top Bar -->
+    <div id="topbar">
+        <div id="company-name">
+            <a href="/">ShopKoko</a>
+        </div>
+        <div id="search-bar">
+            <div class="ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search products...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+        <div id="topbar-options">
+            <a href="#">
+                <button class="ui active button">
+                    <i class="user icon"></i>
+                    Sign In
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <nav id="navbar">
+        <div class="ui menu">
+            <a class="item" href="/">Home</a>
+            <a class="item" href="/products">All Products</a>
+            <a class="item active" href="/manage-products">Manage Products</a>
+            <a class="item" href="/manage-categories">Manage Categories</a>
+            <a class="item" href="/manage-sellers">Manage Sellers</a>
+            <a class="item" href="/profile">Profile</a>
+        </div>
+    </nav>
+
+    <!-- Page Body -->
+    <div id="page-body">
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <h3>Filters</h3>
+
+            <div class="filter-group">
+                <h4>Category</h4>
+                <div class="ui form">
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Laptops"><label>Laptops</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Smartphones"><label>Smartphones</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Electronics"><label>Electronics</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="category-filter" value="Accessories"><label>Accessories</label></div></div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Price Range</h4>
+                <div class="ui form">
+                    <div class="field">
+                        <label>Min ($)</label>
+                        <input type="number" id="min-price" placeholder="0" min="0">
+                    </div>
+                    <div class="field">
+                        <label>Max ($)</label>
+                        <input type="number" id="max-price" placeholder="9999" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Availability</h4>
+                <div class="ui form">
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" id="available-filter"><label>Available</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" id="outofstock-filter"><label>Out of Stock</label></div></div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Seller</h4>
+                <div class="ui form">
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="seller-filter" value="Apple"><label>Apple</label></div></div>
+                    <div class="field"><div class="ui checkbox"><input type="checkbox" class="seller-filter" value="Samsung"><label>Samsung</label></div></div>
+                </div>
+            </div>
+
+            <button class="ui primary fluid button" id="apply-filters-btn">Apply Filters</button>
+            <button class="ui basic fluid button" id="reset-filters-btn" style="margin-top: 8px;">Reset</button>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content">
+
+            <!-- Products Table -->
+            <div id="products-section">
+                <div id="products-header">
+                    <h2>All Products</h2>
+                    <button class="ui primary button" id="add-product-btn">
+                        <i class="plus icon"></i> Add Product
+                    </button>
+                </div>
+                <table class="ui celled table" id="productsTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Seller</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="productsBody">
+                    <tr>
+                        <td colspan="8">Loading products...</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div> <!-- end #page-body -->
+
+    <!-- Footer -->
+    <div id="footer">
+        <div id="footer-brand">
+            <h3>ShopKoko</h3>
+            <p>Your one-stop electronics store.</p>
+        </div>
+
+        <div id="footer-links">
+            <h4>Quick Links</h4>
+            <a href="/">Home</a>
+            <a href="/products">All Products</a>
+        </div>
+
+        <div id="footer-info">
+            <h4>Contact Us</h4>
+            <div class="ui list">
+                <div class="item">
+                    <i class="marker icon"></i>
+                    <div class="content">123 Rochester Institute of Technology, Silicon Oasis, Dubai</div>
+                </div>
+                <div class="item">
+                    <i class="mail icon"></i>
+                    <div class="content">
+                        <a href="#">support@shopkoko.com</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <i class="phone icon"></i>
+                    <div class="content">+971 50 123 4567</div>
+                </div>
+                <div class="item">
+                    <i class="linkify icon"></i>
+                    <div class="content">
+                        <a href="/">www.shopkoko.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-bottom">
+            <p>© 2026 ShopKoko. All rights reserved.</p>
+        </div>
+    </div>
+    <!-- Add / Edit Product Form -->
+    <div class="ui modal" id="product-modal">
+        <i class="close icon"></i>
+
+        <div class="header" id="product-modal-title">Add Product</div>
+
+        <div class="content">
+            <form class="ui form" id="product-form">
+                <input type="hidden" id="product-id">
+
+                <div class="field">
+                    <label>Product Name</label>
+                    <input type="text" id="product-name" required>
+                </div>
+
+                <div class="field">
+                    <label>Description</label>
+                    <textarea id="product-description" rows="3"></textarea>
+                </div>
+
+                <div class="three fields">
+                    <div class="field">
+                        <label>Price</label>
+                        <input type="number" id="product-price" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Quantity</label>
+                        <input type="number" id="product-quantity" min="0" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Cost</label>
+                        <input type="number" id="product-cost" step="0.01" min="0" required>
+                    </div>
+                </div>
+
+                <div class="three fields">
+                    <div class="field">
+                        <label>Available</label>
+                        <select id="product-available" required>
+                            <option value="true">Available</option>
+                            <option value="false">Out of Stock</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Category</label>
+                        <select id="product-category" required>
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Seller</label>
+                        <select id="product-seller" required>
+                            <option value="">Select Seller</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="ui primary button">
+                    <i class="save icon"></i> Save Product
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+<script>
+    let allProducts = [];
+    let allCategories = [];
+    let allSellers = [];
+
+    $(document).ready(function () {
+        loadProducts();
+        loadCategories();
+        loadSellers();
+
+        $("#add-product-btn").on("click", function () {
+            openAddProductForm();
+        });
+
+        $("#product-form").on("submit", function (event) {
+            event.preventDefault();
+            saveProduct();
+        });
+        $("#apply-filters-btn").on("click", function () {
+            applyFilters();
+        });
+
+        $("#reset-filters-btn").on("click", function () {
+            resetFilters();
+        });
+
+        $("#search-bar .prompt").on("input", function () {
+            const searchValue = $(this).val().trim().toLowerCase();
+
+            if (searchValue === "") {
+                showProducts(allProducts);
+                return;
+            }
+
+            const filteredProducts = allProducts.filter(function (product) {
+                return product.productName.toLowerCase().includes(searchValue);
+            });
+
+            showProducts(filteredProducts);
+        });
+    });
+
+    function loadProducts() {
+        $.ajax({
+            url: "/api/products",
+            method: "GET",
+            success: function (products) {
+                allProducts = products;
+                showProducts(products);
+            },
+            error: function () {
+                $("#productsBody").html(`
+                    <tr>
+                        <td colspan="8">Could not load products.</td>
+                    </tr>
+                `);
+            }
+        });
+    }
+
+    function loadCategories() {
+        $.ajax({
+            url: "/api/categories",
+            method: "GET",
+            success: function (categories) {
+                allCategories = categories;
+                fillCategoryDropdown();
+            }
+        });
+    }
+
+    function loadSellers() {
+        $.ajax({
+            url: "/api/sellers",
+            method: "GET",
+            success: function (sellers) {
+                allSellers = sellers;
+                fillSellerDropdown();
+            }
+        });
+    }
+
+    function fillCategoryDropdown() {
+        const dropdown = $("#product-category");
+        dropdown.html(`<option value="">Select Category</option>`);
+
+        allCategories.forEach(function (category) {
+            dropdown.append(`
+                <option value="${category.categoryId}">
+                    ${category.categoryName}
+                </option>
+            `);
+        });
+    }
+
+    function fillSellerDropdown() {
+        const dropdown = $("#product-seller");
+        dropdown.html(`<option value="">Select Seller</option>`);
+
+        allSellers.forEach(function (seller) {
+            dropdown.append(`
+                <option value="${seller.sellerId}">
+                    ${seller.storeName}
+                </option>
+            `);
+        });
+    }
+
+    function showProducts(products) {
+        const body = $("#productsBody");
+        body.empty();
+
+        if (products.length === 0) {
+            body.html(`
+                <tr>
+                    <td colspan="8">No products found.</td>
+                </tr>
+            `);
+            return;
+        }
+
+        products.forEach(function (product) {
+            const categoryName = product.category ? product.category.categoryName : "N/A";
+            const sellerName = product.seller ? product.seller.storeName : "N/A";
+            const statusLabel = product.productAvailable
+                ? `<span class="ui green label">Available</span>`
+                : `<span class="ui red label">Out of Stock</span>`;
+
+            body.append(`
+                <tr>
+                    <td>${product.productId}</td>
+                    <td>${product.productName}</td>
+                    <td>${product.productDescription || ""}</td>
+                    <td>$${Number(product.productPrice).toFixed(2)}</td>
+                    <td>${categoryName}</td>
+                    <td>${sellerName}</td>
+                    <td>${statusLabel}</td>
+                    <td>
+                        <button class="ui basic tiny button" onclick="editProduct(${product.productId})">
+                            <i class="edit icon"></i> Edit
+                        </button>
+                        <button class="ui red basic tiny button" onclick="deleteProduct(${product.productId})">
+                            <i class="trash icon"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
+        });
+    }
+
+    function openAddProductForm() {
+        $("#product-modal-title").text("Add Product");
+        $("#product-id").val("");
+        $("#product-form")[0].reset();
+        $("#product-available").val("true");
+
+        $("#product-modal").modal("show");
+    }
+
+    function editProduct(productId) {
+        const product = allProducts.find(function (item) {
+            return item.productId === productId;
+        });
+
+        if (!product) {
+            alert("Product not found.");
+            return;
+        }
+
+        $("#product-modal-title").text("Edit Product");
+        $("#product-id").val(product.productId);
+        $("#product-name").val(product.productName);
+        $("#product-description").val(product.productDescription);
+        $("#product-price").val(product.productPrice);
+        $("#product-quantity").val(product.productQuantity);
+        $("#product-cost").val(product.productCost);
+        $("#product-available").val(String(product.productAvailable));
+
+        if (product.category) {
+            $("#product-category").val(product.category.categoryId);
+        } else {
+            $("#product-category").val("");
+        }
+
+        if (product.seller) {
+            $("#product-seller").val(product.seller.sellerId);
+        } else {
+            $("#product-seller").val("");
+        }
+
+        $("#product-modal").modal("show");
+    }
+
+    function saveProduct() {
+        const productId = $("#product-id").val();
+        const categoryValue = $("#product-category").val();
+        const sellerValue = $("#product-seller").val();
+
+        const productData = {
+            productName: $("#product-name").val().trim(),
+            productDescription: $("#product-description").val().trim(),
+            productPrice: Number($("#product-price").val()),
+            productQuantity: Number($("#product-quantity").val()),
+            productCost: Number($("#product-cost").val()),
+            productAvailable: $("#product-available").val() === "true",
+            category: categoryValue ? { categoryId: Number(categoryValue) } : null,
+            seller: sellerValue ? { sellerId: Number(sellerValue) } : null
+        };
+
+        const method = productId ? "PUT" : "POST";
+        const url = productId ? "/api/products/" + productId : "/api/products";
+
+        $.ajax({
+            url: url,
+            method: method,
+            contentType: "application/json",
+            data: JSON.stringify(productData),
+            success: function () {
+                $("#product-modal").modal("hide");
+                loadProducts();
+            },
+            error: function () {
+                alert("Could not save product.");
+            }
+        });
+    }
+
+
+    function deleteProduct(productId) {
+        const confirmed = confirm("Are you sure you want to delete this product?");
+        if (!confirmed) {
+            return;
+        }
+
+        $.ajax({
+            url: "/api/products/" + productId,
+            method: "DELETE",
+            success: function () {
+                loadProducts();
+            },
+            error: function () {
+                alert("Could not delete product.");
+            }
+        });
+    }
+    function applyFilters() {
+        let filteredProducts = allProducts;
+
+        const selectedCategories = $(".category-filter:checked").map(function () {
+            return $(this).val().toLowerCase();
+        }).get();
+
+        const selectedSellers = $(".seller-filter:checked").map(function () {
+            return $(this).val().toLowerCase();
+        }).get();
+
+        const minPrice = $("#min-price").val();
+        const maxPrice = $("#max-price").val();
+
+        const availableChecked = $("#available-filter").is(":checked");
+        const outOfStockChecked = $("#outofstock-filter").is(":checked");
+
+        if (selectedCategories.length > 0) {
+            filteredProducts = filteredProducts.filter(function (product) {
+                const categoryName = product.category ? product.category.categoryName.toLowerCase() : "";
+                return selectedCategories.includes(categoryName);
+            });
+        }
+
+        if (selectedSellers.length > 0) {
+            filteredProducts = filteredProducts.filter(function (product) {
+                const sellerName = product.seller ? product.seller.storeName.toLowerCase() : "";
+                return selectedSellers.includes(sellerName);
+            });
+        }
+
+        if (minPrice !== "") {
+            filteredProducts = filteredProducts.filter(function (product) {
+                return Number(product.productPrice) >= Number(minPrice);
+            });
+        }
+
+        if (maxPrice !== "") {
+            filteredProducts = filteredProducts.filter(function (product) {
+                return Number(product.productPrice) <= Number(maxPrice);
+            });
+        }
+
+        if (availableChecked && !outOfStockChecked) {
+            filteredProducts = filteredProducts.filter(function (product) {
+                return product.productAvailable === true;
+            });
+        }
+
+        if (!availableChecked && outOfStockChecked) {
+            filteredProducts = filteredProducts.filter(function (product) {
+                return product.productAvailable === false;
+            });
+        }
+
+        showProducts(filteredProducts);
+    }
+
+    function resetFilters() {
+        $(".category-filter").prop("checked", false);
+        $(".seller-filter").prop("checked", false);
+        $("#available-filter").prop("checked", false);
+        $("#outofstock-filter").prop("checked", false);
+        $("#min-price").val("");
+        $("#max-price").val("");
+
+        showProducts(allProducts);
+    }
+</script>
+</body>
+</html>

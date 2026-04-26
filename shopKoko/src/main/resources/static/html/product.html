@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Product - ShopKoko</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+<body>
+<div id="main-container">
+
+    <!-- Top Bar -->
+    <div id="topbar">
+        <!-- Company Name -->
+        <div id="company-name">
+            <a href="/">ShopKoko</a>
+        </div>
+        <!--Semantic UI SearchBar-->
+        <div id="search-bar">
+            <div class="ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search products...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+        <!--Semantic UI Button-->
+        <div id="topbar-options">
+            <a href="#">
+                <button class="ui active button">
+                    <i class="user icon"></i>
+                    Sign In
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <nav id="navbar">
+        <div class="ui menu">
+            <a class="item" href="/">Home</a>
+            <a class="item" href="/products">All Products</a>
+            <a class="item" href="/manage-products">Manage Products</a>
+            <a class="item" href="/manage-categories">Manage Categories</a>
+            <a class="item" href="/manage-sellers">Manage Sellers</a>
+            <a class="item" href="/profile">Profile</a>
+        </div>
+    </nav>
+
+    <!-- Product Details Section -->
+    <div id="product-section">
+
+        <div id="product-card">
+
+            <div id="product-image-box" style="text-align:center; margin-bottom: 24px;">
+                <div id="product-image-emoji" style="font-size: 110px;">🛒</div>
+            </div>
+
+            <div id="product-info">
+                <h2 id="product-name">Product Name</h2>
+                <p id="product-category">Category: -</p>
+                <p id="product-seller">Seller: -</p>
+
+                <div class="ui divider"></div>
+
+                <p id="product-description">Description goes here.</p>
+
+                <div class="ui list">
+                    <div class="item">
+                        <i class="tag icon"></i>
+                        <div class="content">Price: <strong id="product-price">$0.00</strong></div>
+                    </div>
+                    <div class="item">
+                        <i class="dollar icon"></i>
+                        <div class="content">Cost: <strong id="product-cost">$0.00</strong></div>
+                    </div>
+                    <div class="item">
+                        <i class="cubes icon"></i>
+                        <div class="content">Quantity: <strong id="product-quantity">0</strong></div>
+                    </div>
+                    <div class="item">
+                        <i class="check circle icon"></i>
+                        <div class="content">Available: <strong id="product-available">-</strong></div>
+                    </div>
+                </div>
+
+                <div class="ui divider"></div>
+
+                <div id="product-actions">
+                    <div class="ui primary vertical animated button"
+                         tabindex="0"
+                         id="add-to-cart-btn">
+                        <div class="visible content">Add to Cart</div>
+                        <div class="hidden content">
+                            <i class="shop icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div id="cart-message"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+<script>
+    let currentProduct = null;
+
+    $(document).ready(function () {
+        loadProduct();
+
+        $("#add-to-cart-btn").on("click", function () {
+            addCurrentProductToCart();
+        });
+    });
+
+    function loadProduct() {
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get("id");
+
+        if (!productId) {
+            $("#product-name").text("Product Not Found");
+            $("#product-description").text("No product ID was provided.");
+            return;
+        }
+
+        $.ajax({
+            url: "/api/products/" + productId,
+            method: "GET",
+            success: function (product) {
+                currentProduct = product;
+                showProduct(product);
+            },
+            error: function () {
+                $("#product-name").text("Product Not Found");
+                $("#product-description").text("Could not load this product.");
+            }
+        });
+    }
+
+    function showProduct(product) {
+        const categoryName = product.category ? product.category.categoryName : "General";
+        const sellerName = product.seller ? product.seller.storeName : "ShopKoko";
+
+        $("#product-name").text(product.productName);
+        $("#product-category").text("Category: " + categoryName);
+        $("#product-seller").text("Seller: " + sellerName);
+        $("#product-description").text(product.productDescription || "No description available.");
+        $("#product-price").text("$" + Number(product.productPrice).toFixed(2));
+        $("#product-cost").text("$" + Number(product.productCost).toFixed(2));
+        $("#product-quantity").text(product.productQuantity);
+        $("#product-available").text(product.productAvailable ? "Yes" : "No");
+        $("#product-image-emoji").text(getProductEmoji(categoryName));
+
+        document.title = product.productName + " - ShopKoko";
+    }
+
+    function addCurrentProductToCart() {
+        if (!currentProduct) {
+            alert("Product is not loaded yet.");
+            return;
+        }
+
+        showCartMessage(currentProduct.productName + " added to cart successfully.");
+    }
+
+    function getProductEmoji(categoryName) {
+        const value = categoryName.toLowerCase();
+
+        if (value.includes("phone")) return "📱";
+        if (value.includes("laptop")) return "💻";
+        if (value.includes("audio") || value.includes("headphone")) return "🎧";
+        if (value.includes("gaming")) return "🎮";
+        if (value.includes("camera")) return "📷";
+        if (value.includes("tv") || value.includes("display")) return "📺";
+        if (value.includes("wearable") || value.includes("watch")) return "⌚";
+        if (value.includes("accessor")) return "🔌";
+
+        return "🛒";
+    }
+
+    function showCartMessage(message) {
+        const cart = $("#cart-message");
+
+        cart.text(message);
+        cart.addClass("show");
+
+        clearTimeout(cart.data("timeout"));
+
+        const timeout = setTimeout(function () {
+            cart.removeClass("show");
+        }, 2500);
+
+        cart.data("timeout", timeout);
+    }
+
+</script>
+</body>
+</html>

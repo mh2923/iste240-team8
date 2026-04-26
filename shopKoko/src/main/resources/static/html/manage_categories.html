@@ -1,0 +1,402 @@
+<!-- Muhammad Usman Habib - 761005924 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Categories - ShopKoKo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <link rel="stylesheet" href="/css/manage_categories.css">
+</head>
+<body>
+<div id="main-container">
+
+    <!-- Top Bar -->
+    <div id="topbar">
+        <div id="company-name">
+            <a href="/">ShopKoko</a>
+        </div>
+        <div id="search-bar">
+            <div class="ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search categories...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+        <div id="topbar-options">
+            <a href="#">
+                <button class="ui active button">
+                    <i class="user icon"></i>
+                    Sign In
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <nav id="navbar">
+        <div class="ui menu">
+            <a class="item" href="/">Home</a>
+            <a class="item" href="/products">All Products</a>
+            <a class="item" href="/manage-products">Manage Products</a>
+            <a class="item active" href="/manage-categories">Manage Categories</a>
+            <a class="item" href="/manage-sellers">Manage Sellers</a>
+            <a class="item" href="/profile">Profile</a>
+        </div>
+    </nav>
+
+    <!-- Page Body -->
+    <div id="page-body">
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <h3>Filters</h3>
+
+            <div class="filter-group">
+                <h4>Search Category</h4>
+                <div class="ui form">
+                    <div class="field">
+                        <input type="text" id="category-search" placeholder="Category name...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Category Type</h4>
+                <div class="ui form">
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" id="main-only-filter">
+                            <label>Main Categories Only</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="ui primary fluid button" id="apply-filters-btn">Apply Filters</button>
+            <button class="ui basic fluid button" id="reset-filters-btn" style="margin-top: 8px;">Reset</button>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content">
+
+            <!-- Categories Table -->
+            <div id="categories-section">
+                <div id="categories-header">
+                    <h2>All Categories</h2>
+                    <button class="ui primary button" id="add-category-btn">
+                        <i class="plus icon"></i> Add Category
+                    </button>
+                </div>
+
+                <table class="ui celled table" id="categoriesTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Parent Category</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="categoriesBody">
+                    <tr>
+                        <td colspan="5">Loading categories...</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+        <div id="footer-brand">
+            <h3>ShopKoko</h3>
+            <p>Your one-stop electronics store.</p>
+        </div>
+
+        <div id="footer-links">
+            <h4>Quick Links</h4>
+            <a href="/">Home</a>
+            <a href="/products">All Products</a>
+        </div>
+
+        <div id="footer-info">
+            <h4>Contact Us</h4>
+            <div class="ui list">
+                <div class="item">
+                    <i class="marker icon"></i>
+                    <div class="content">123 Rochester Institute of Technology, Silicon Oasis, Dubai</div>
+                </div>
+                <div class="item">
+                    <i class="mail icon"></i>
+                    <div class="content">
+                        <a href="#">support@shopkoko.com</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <i class="phone icon"></i>
+                    <div class="content">+971 50 123 4567</div>
+                </div>
+                <div class="item">
+                    <i class="linkify icon"></i>
+                    <div class="content">
+                        <a href="/">www.shopkoko.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-bottom">
+            <p>© 2026 ShopKoko. All rights reserved.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Add / Edit Category Form -->
+<div class="ui modal" id="category-modal">
+    <i class="close icon"></i>
+
+    <div class="header" id="category-modal-title">Add Category</div>
+
+    <div class="content">
+        <form class="ui form" id="category-form">
+            <input type="hidden" id="category-id">
+
+            <div class="field">
+                <label>Category Name</label>
+                <input type="text" id="category-name" required>
+            </div>
+
+            <div class="field">
+                <label>Description</label>
+                <textarea id="category-description" rows="3"></textarea>
+            </div>
+
+            <div class="field">
+                <label>Parent Category</label>
+                <select id="parent-category">
+                    <option value="">No Parent Category</option>
+                </select>
+            </div>
+
+            <button type="submit" class="ui primary button">
+                <i class="save icon"></i> Save Category
+            </button>
+        </form>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+
+<script>
+    let allCategories = [];
+
+    $(document).ready(function () {
+        loadCategories();
+
+        $("#add-category-btn").on("click", function () {
+            openAddCategoryForm();
+        });
+
+        $("#category-form").on("submit", function (event) {
+            event.preventDefault();
+            saveCategory();
+        });
+
+        $("#apply-filters-btn").on("click", function () {
+            applyFilters();
+        });
+
+        $("#reset-filters-btn").on("click", function () {
+            resetFilters();
+        });
+    });
+
+    function loadCategories() {
+        $.ajax({
+            url: "/api/categories",
+            method: "GET",
+            success: function (categories) {
+                allCategories = categories;
+                showCategories(categories);
+                fillParentCategoryDropdown();
+            },
+            error: function () {
+                $("#categoriesBody").html(`
+                    <tr>
+                        <td colspan="5">Could not load categories.</td>
+                    </tr>
+                `);
+            }
+        });
+    }
+
+    function fillParentCategoryDropdown(excludeId) {
+        const dropdown = $("#parent-category");
+        dropdown.html('<option value="">No Parent Category</option>');
+
+        allCategories.forEach(function (category) {
+            if (category.categoryId !== excludeId) {
+                dropdown.append(`
+                <option value="${category.categoryId}">
+                    ${category.categoryName}
+                </option>
+            `);
+            }
+        });
+    }
+
+    function showCategories(categories) {
+        const body = $("#categoriesBody");
+        body.empty();
+
+        if (categories.length === 0) {
+            body.html(`
+                <tr>
+                    <td colspan="5">No categories found.</td>
+                </tr>
+            `);
+            return;
+        }
+
+        categories.forEach(function (category) {
+            const parentName = category.parentCategory ? category.parentCategory.categoryName : "Main Category";
+
+            body.append(`
+                <tr>
+                    <td>${category.categoryId}</td>
+                    <td>${category.categoryName}</td>
+                    <td>${category.description || ""}</td>
+                    <td>${parentName}</td>
+                    <td>
+                        <button class="ui basic tiny button" onclick="editCategory(${category.categoryId})">
+                            <i class="edit icon"></i> Edit
+                        </button>
+                        <button class="ui red basic tiny button" onclick="deleteCategory(${category.categoryId})">
+                            <i class="trash icon"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
+        });
+    }
+
+    function openAddCategoryForm() {
+        $("#category-modal-title").text("Add Category");
+        $("#category-id").val("");
+        $("#category-form")[0].reset();
+        fillParentCategoryDropdown(null);
+
+        $("#category-modal").modal("show");
+    }
+
+    function editCategory(categoryId) {
+        const category = allCategories.find(function (item) {
+            return item.categoryId === categoryId;
+        });
+
+        if (!category) {
+            alert("Category not found.");
+            return;
+        }
+
+        $("#category-modal-title").text("Edit Category");
+        $("#category-id").val(category.categoryId);
+        $("#category-name").val(category.categoryName);
+        $("#category-description").val(category.description || "");
+
+        fillParentCategoryDropdown(category.categoryId);
+
+        if (category.parentCategory) {
+            $("#parent-category").val(category.parentCategory.categoryId);
+        } else {
+            $("#parent-category").val("");
+        }
+
+        $("#category-modal").modal("show");
+    }
+
+    function saveCategory() {
+        const categoryId = $("#category-id").val();
+        const parentCategoryValue = $("#parent-category").val();
+
+        const categoryData = {
+            categoryName: $("#category-name").val().trim(),
+            description: $("#category-description").val().trim(),
+            parentCategory: parentCategoryValue ? { categoryId: Number(parentCategoryValue) } : null
+        };
+
+        const method = categoryId ? "PUT" : "POST";
+        const url = categoryId ? "/api/categories/" + categoryId : "/api/categories";
+
+        $.ajax({
+            url: url,
+            method: method,
+            contentType: "application/json",
+            data: JSON.stringify(categoryData),
+            success: function () {
+                $("#category-modal").modal("hide");
+                loadCategories();
+            },
+            error: function () {
+                alert("Could not save category.");
+            }
+        });
+    }
+
+    function deleteCategory(categoryId) {
+        const confirmed = confirm("Are you sure you want to delete this category?");
+        if (!confirmed) {
+            return;
+        }
+
+        $.ajax({
+            url: "/api/categories/" + categoryId,
+            method: "DELETE",
+            success: function () {
+                loadCategories();
+            },
+            error: function () {
+                alert("Could not delete category.");
+            }
+        });
+    }
+
+    function applyFilters() {
+        const searchValue = $("#category-search").val().trim().toLowerCase();
+        const mainOnly = $("#main-only-filter").is(":checked");
+
+        let filteredCategories = allCategories;
+
+        if (searchValue !== "") {
+            filteredCategories = filteredCategories.filter(function (category) {
+                const name = category.categoryName ? category.categoryName.toLowerCase() : "";
+                const description = category.description ? category.description.toLowerCase() : "";
+                return name.includes(searchValue) || description.includes(searchValue);
+            });
+        }
+
+        if (mainOnly) {
+            filteredCategories = filteredCategories.filter(function (category) {
+                return !category.parentCategory;
+            });
+        }
+
+        showCategories(filteredCategories);
+    }
+
+    function resetFilters() {
+        $("#category-search").val("");
+        $("#main-only-filter").prop("checked", false);
+        showCategories(allCategories);
+    }
+</script>
+</body>
+</html>
