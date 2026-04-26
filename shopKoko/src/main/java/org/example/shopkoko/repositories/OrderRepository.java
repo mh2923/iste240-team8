@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import jakarta.transaction.Transactional;
 import java.util.List;
 
+/*Made by Tanmay*/
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByStatus(String status);
