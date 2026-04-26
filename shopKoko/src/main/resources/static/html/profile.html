@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - ShopKoko</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+<div id="main-container">
+
+    <!-- Top Bar -->
+    <div id="topbar">
+        <!-- Company Name -->
+        <div id="company-name">
+            <a href="/">ShopKoko</a>
+        </div>
+        <!--Semantic UI SearchBar-->
+        <div id="search-bar">
+            <div class="ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search products...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+        <!--Semantic UI Button-->
+        <div id="topbar-options">
+            <a href="/login">
+                <button class="ui active button">
+                    <i class="user icon"></i>
+                    Sign In
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <nav id="navbar">
+        <div class="ui menu">
+            <a class="item" href="/">Home</a>
+            <a class="item" href="/products">All Products</a>
+            <a class="item" href="/manage-products">Manage Products</a>
+            <a class="item" href="/manage-categories">Manage Categories</a>
+            <a class="item" href="/manage-sellers">Manage Sellers</a>
+            <a class="item active" href="/profile">Profile</a>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <div id="profile-section">
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="sidebar-item active" id="show-profile-btn"><i class="user icon"></i> My Profile</div>
+            <div class="sidebar-item" id="show-orders-btn"><i class="box icon"></i> My Orders</div>
+            <div class="sidebar-item"><i class="map marker icon"></i> Addresses</div>
+            <div class="sidebar-item"><i class="sign out icon"></i> Sign Out</div>
+        </div>
+
+        <!-- Profile Card -->
+        <div id="profile-card">
+            <div id="profile-details">
+                <h2 id="profile-name">John Doe</h2>
+                <div class="ui list">
+                    <div class="item">
+                        <i class="mail icon"></i>
+                        <div class="content" id="profile-email">johndoe@email.com</div>
+                    </div>
+                    <div class="item">
+                        <i class="phone icon"></i>
+                        <div class="content" id="profile-phone">+1 234 567 8900</div>
+                    </div>
+                    <div class="item">
+                        <i class="marker icon"></i>
+                        <div class="content" id="profile-address">123 Main Street, Dubai</div>
+                    </div>
+                </div>
+                <button class="ui button" id="edit-profile-btn"><i class="edit icon"></i> Edit Profile</button>
+            </div>
+        </div>
+
+        <!-- Orders Card -->
+        <div id="orders-card" style="display: none;">
+            <div id="orders-details">
+                <h2>My Orders</h2>
+                <table class="ui celled table" id="orders-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Product</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody id="orders-body">
+                    <tr>
+                        <td colspan="5">Loading orders...</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+<script>
+    let currentCustomerId = null;
+    let currentCustomer = null;
+
+    $(document).ready(function () {
+        createEditProfileModal();
+        loadCustomerProfile();
+
+        $("#show-profile-btn").on("click", function () {
+            $(".sidebar-item").removeClass("active");
+            $(this).addClass("active");
+
+            $("#orders-card").hide();
+            $("#profile-card").show();
+        });
+
+        $("#show-orders-btn").on("click", function () {
+            $(".sidebar-item").removeClass("active");
+            $(this).addClass("active");
+
+            $("#profile-card").hide();
+            $("#orders-card").show();
+
+            loadCustomerOrders();
+        });
+
+        $("#edit-profile-btn").on("click", function () {
+            openEditProfileModal();
+        });
+
+        $(document).on("submit", "#edit-profile-form", function (event) {
+            event.preventDefault();
+            updateCustomerProfile();
+        });
+    });
+
+    function loadCustomerProfile() {
+        const params = new URLSearchParams(window.location.search);
+        const customerId = params.get("id") || 1;
+
+        currentCustomerId = customerId;
+
+        $.ajax({
+            url: "/api/customers/" + customerId,
+            method: "GET",
+            success: function (customer) {
+                currentCustomer = customer;
+                showCustomerProfile(customer);
+            },
+            error: function () {
+                $("#profile-name").text("Customer Not Found");
+                $("#profile-email").text("Could not load email");
+                $("#profile-phone").text("Could not load phone");
+                $("#profile-address").text("Could not load address");
+            }
+        });
+    }
+
+    function showCustomerProfile(customer) {
+        $("#profile-name").text(customer.customerName || "No Name");
+        $("#profile-email").text(customer.customerEmail || "No Email");
+        $("#profile-phone").text(customer.customerPhone || "No Phone");
+        $("#profile-address").text(customer.customerAddress || "No Address");
+    }
+
+    function loadCustomerOrders() {
+        if (!currentCustomerId) {
+            $("#orders-body").html(`
+                <tr>
+                    <td colspan="5">Customer not loaded.</td>
+                </tr>
+            `);
+            return;
+        }
+
+        $("#orders-body").html(`
+            <tr>
+                <td colspan="5">Loading orders...</td>
+            </tr>
+        `);
+
+        $.ajax({
+            url: "/api/orders/customer/" + currentCustomerId,
+            method: "GET",
+            success: function (orders) {
+                showOrders(orders);
+            },
+            error: function () {
+                $("#orders-body").html(`
+                    <tr>
+                        <td colspan="5">Could not load orders.</td>
+                    </tr>
+                `);
+            }
+        });
+    }
+
+    function showOrders(orders) {
+        const body = $("#orders-body");
+        body.empty();
+
+        if (orders.length === 0) {
+            body.html(`
+                <tr>
+                    <td colspan="5">No orders found.</td>
+                </tr>
+            `);
+            return;
+        }
+
+        orders.forEach(function (order) {
+            const productName = order.product ? order.product.productName : "N/A";
+
+            body.append(`
+                <tr>
+                    <td>${order.orderId}</td>
+                    <td>${order.orderDate}</td>
+                    <td>${productName}</td>
+                    <td>${order.status}</td>
+                    <td>${order.orderDescription || ""}</td>
+                </tr>
+            `);
+        });
+    }
+
+    function createEditProfileModal() {
+        if ($("#edit-profile-modal").length > 0) {
+            return;
+        }
+
+        $("body").append(`
+            <div class="ui modal" id="edit-profile-modal">
+                <i class="close icon"></i>
+                <div class="header">Edit Profile</div>
+
+                <div class="content">
+                    <form class="ui form" id="edit-profile-form">
+                        <div class="field">
+                            <label>Name</label>
+                            <input type="text" id="edit-customer-name" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Email</label>
+                            <input type="email" id="edit-customer-email" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Phone</label>
+                            <input type="text" id="edit-customer-phone" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Address</label>
+                            <textarea id="edit-customer-address" rows="3" required></textarea>
+                        </div>
+
+                        <button type="submit" class="ui primary button">
+                            <i class="save icon"></i> Save Changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+        `);
+    }
+
+    function openEditProfileModal() {
+        if (!currentCustomer) {
+            alert("Customer profile is not loaded yet.");
+            return;
+        }
+
+        $("#edit-customer-name").val(currentCustomer.customerName || "");
+        $("#edit-customer-email").val(currentCustomer.customerEmail || "");
+        $("#edit-customer-phone").val(currentCustomer.customerPhone || "");
+        $("#edit-customer-address").val(currentCustomer.customerAddress || "");
+
+        $("#edit-profile-modal")
+            .modal({
+                closable: true
+            })
+            .modal("show");
+    }
+
+    function updateCustomerProfile() {
+        const updatedCustomer = {
+            customerName: $("#edit-customer-name").val().trim(),
+            customerEmail: $("#edit-customer-email").val().trim(),
+            customerPhone: $("#edit-customer-phone").val().trim(),
+            customerAddress: $("#edit-customer-address").val().trim()
+        };
+
+        $.ajax({
+            url: "/api/customers/" + currentCustomerId,
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(updatedCustomer),
+            success: function (customer) {
+                currentCustomer = customer;
+                showCustomerProfile(customer);
+                $("#edit-profile-modal").modal("hide");
+                alert("Profile updated successfully.");
+            },
+            error: function () {
+                alert("Failed to update profile.");
+            }
+        });
+    }
+</script>
+</body>
+</html>
