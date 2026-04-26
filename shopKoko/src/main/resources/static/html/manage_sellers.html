@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopKoKo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
-    <link rel="stylesheet" href="/static/css/manage_sellers.css">
+    <link rel="stylesheet" href="/css/manage_sellers.css">
 </head>
 <body>
 <div id="main-container">
@@ -32,14 +32,6 @@
                     Sign In
                 </button>
             </a>
-            <a href="/cart">
-                <div class="ui vertical animated button" tabindex="0">
-                    <div class="hidden content">Cart</div>
-                    <div class="visible content">
-                        <i class="shop icon"></i>
-                    </div>
-                </div>
-            </a>
         </div>
     </div>
 
@@ -51,7 +43,6 @@
             <a class="item" href="/manage-products">Manage Products</a>
             <a class="item" href="/manage-categories">Manage Categories</a>
             <a class="item active" href="/manage-sellers">Manage Sellers</a>
-            <a class="item" href="/cart">Cart</a>
             <a class="item" href="/profile">Profile</a>
         </div>
     </nav>
@@ -131,7 +122,6 @@
             <h4>Quick Links</h4>
             <a href="/">Home</a>
             <a href="/products">All Products</a>
-            <a href="/cart">Cart</a>
         </div>
 
         <div id="footer-info">
@@ -207,3 +197,196 @@
         </form>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+
+<script>
+    let allSellers = [];
+
+    $(document).ready(function () {
+        loadSellers();
+
+        $("#add-seller-btn").on("click", function () {
+            openAddSellerForm();
+        });
+
+        $("#seller-form").on("submit", function (event) {
+            event.preventDefault();
+            saveSeller();
+        });
+
+        $("#apply-filters-btn").on("click", function () {
+            applyFilters();
+        });
+
+        $("#reset-filters-btn").on("click", function () {
+            resetFilters();
+        });
+    });
+
+    function loadSellers() {
+        $.ajax({
+            url: "/api/sellers",
+            method: "GET",
+            success: function (sellers) {
+                allSellers = sellers;
+                showSellers(sellers);
+            },
+            error: function () {
+                $("#sellersBody").html(`
+                    <tr>
+                        <td colspan="7">Could not load sellers.</td>
+                    </tr>
+                `);
+            }
+        });
+    }
+
+    function showSellers(sellers) {
+        const body = $("#sellersBody");
+        body.empty();
+
+        if (sellers.length === 0) {
+            body.html(`
+                <tr>
+                    <td colspan="7">No sellers found.</td>
+                </tr>
+            `);
+            return;
+        }
+
+        sellers.forEach(function (seller) {
+            body.append(`
+                <tr>
+                    <td>${seller.sellerId}</td>
+                    <td>${seller.sellerName}</td>
+                    <td>${seller.sellerEmail}</td>
+                    <td>${seller.sellerPhone || ""}</td>
+                    <td>${seller.sellerAddress || ""}</td>
+                    <td>${seller.storeName}</td>
+                    <td>
+                        <button class="ui basic tiny button" onclick="editSeller(${seller.sellerId})">
+                            <i class="edit icon"></i> Edit
+                        </button>
+                        <button class="ui red basic tiny button" onclick="deleteSeller(${seller.sellerId})">
+                            <i class="trash icon"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
+        });
+    }
+
+    function openAddSellerForm() {
+        $("#seller-modal-title").text("Add Seller");
+        $("#seller-id").val("");
+        $("#seller-form")[0].reset();
+
+        $("#seller-modal").modal("show");
+    }
+
+    function editSeller(sellerId) {
+        const seller = allSellers.find(function (item) {
+            return item.sellerId === sellerId;
+        });
+
+        if (!seller) {
+            alert("Seller not found.");
+            return;
+        }
+
+        $("#seller-modal-title").text("Edit Seller");
+        $("#seller-id").val(seller.sellerId);
+        $("#seller-name").val(seller.sellerName);
+        $("#seller-email").val(seller.sellerEmail);
+        $("#seller-phone").val(seller.sellerPhone || "");
+        $("#seller-address").val(seller.sellerAddress || "");
+        $("#store-name").val(seller.storeName);
+
+        $("#seller-modal").modal("show");
+    }
+
+    function saveSeller() {
+        const sellerId = $("#seller-id").val();
+
+        const sellerData = {
+            sellerName: $("#seller-name").val().trim(),
+            sellerEmail: $("#seller-email").val().trim(),
+            sellerPhone: $("#seller-phone").val().trim(),
+            sellerAddress: $("#seller-address").val().trim(),
+            storeName: $("#store-name").val().trim()
+        };
+
+        const method = sellerId ? "PUT" : "POST";
+        const url = sellerId ? "/api/sellers/" + sellerId : "/api/sellers";
+
+        $.ajax({
+            url: url,
+            method: method,
+            contentType: "application/json",
+            data: JSON.stringify(sellerData),
+            success: function () {
+                $("#seller-modal").modal("hide");
+                loadSellers();
+            },
+            error: function () {
+                alert("Could not save seller.");
+            }
+        });
+    }
+
+    function deleteSeller(sellerId) {
+        const confirmed = confirm("Are you sure you want to delete this seller?");
+        if (!confirmed) {
+            return;
+        }
+
+        $.ajax({
+            url: "/api/sellers/" + sellerId,
+            method: "DELETE",
+            success: function () {
+                loadSellers();
+            },
+            error: function () {
+                alert("Could not delete seller.");
+            }
+        });
+    }
+
+    function applyFilters() {
+        const searchValue = $("#seller-search").val().trim().toLowerCase();
+
+        const selectedStores = $(".store-filter:checked").map(function () {
+            return $(this).val().toLowerCase();
+        }).get();
+
+        let filteredSellers = allSellers;
+
+        if (searchValue !== "") {
+            filteredSellers = filteredSellers.filter(function (seller) {
+                const sellerName = seller.sellerName ? seller.sellerName.toLowerCase() : "";
+                const email = seller.sellerEmail ? seller.sellerEmail.toLowerCase() : "";
+                const storeName = seller.storeName ? seller.storeName.toLowerCase() : "";
+                return sellerName.includes(searchValue) || email.includes(searchValue) || storeName.includes(searchValue);
+            });
+        }
+
+        if (selectedStores.length > 0) {
+            filteredSellers = filteredSellers.filter(function (seller) {
+                const storeName = seller.storeName ? seller.storeName.toLowerCase() : "";
+                return selectedStores.includes(storeName);
+            });
+        }
+
+        showSellers(filteredSellers);
+    }
+
+    function resetFilters() {
+        $("#seller-search").val("");
+        $(".store-filter").prop("checked", false);
+        showSellers(allSellers);
+    }
+</script>
+</body>
+</html>
