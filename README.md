@@ -26,7 +26,7 @@ Electronic devices have reached the most remote places in this world. The need f
 
 ### Usman @mh2923
 
-- Created the manage-categories.html, manage-products.html and products.html page
+- Created the manage-categories.html, manage-products.html and products.html,product.html page
 - Created the product, category entity
 - Created the product, category controller
 - Created the product, category repository
